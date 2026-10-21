@@ -1,0 +1,89 @@
+{
+  "name_lookups": {
+    "local_path": {
+      "name": "models/Qwen3-4B",
+      "MODEL_TO_MESSAGE_CONVERTER[name.lower()]": false,
+      "MODEL_TO_SYSTEM_PROMPT_TOKENIZER[name.lower()]": false,
+      "MODEL_TO_THINKING_OVERRIDES[name.lower()]": false,
+      "name in MODELS_WITH_THINKING (case-sensitive)": false
+    },
+    "official": {
+      "name": "Qwen/Qwen3-4B",
+      "MODEL_TO_MESSAGE_CONVERTER[name.lower()]": true,
+      "MODEL_TO_SYSTEM_PROMPT_TOKENIZER[name.lower()]": true,
+      "MODEL_TO_THINKING_OVERRIDES[name.lower()]": true,
+      "name in MODELS_WITH_THINKING (case-sensitive)": false
+    },
+    "cartridges_style": {
+      "name": "Qwen/Qwen3-4b",
+      "MODEL_TO_MESSAGE_CONVERTER[name.lower()]": true,
+      "MODEL_TO_SYSTEM_PROMPT_TOKENIZER[name.lower()]": true,
+      "MODEL_TO_THINKING_OVERRIDES[name.lower()]": true,
+      "name in MODELS_WITH_THINKING (case-sensitive)": true
+    }
+  },
+  "system_prompt": {
+    "mem_tokens": 10979,
+    "cartridges_full_equals_ours": true,
+    "first_diff": null,
+    "k64_init_len": 64,
+    "k64_init_equals_first_62_of_M_plus_end": true,
+    "k64_init_equals_first_64_of_M": false,
+    "k64_init_tail_decoded": "73.90,<|im_end|>\n"
+  },
+  "message_converter": {
+    "target(HF gen prompt + answer + im_end)": "<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n463.26<|im_end|>",
+    "hf_full_template_tail": "\n<|im_start|>assistant\n<think>\n\n</think>\n\n463.26<|im_end|>\n",
+    "hf_full_template_equals_target(+newline)": true,
+    "cartridges_plain_equals_target": false,
+    "cartridges_plain_first_diff": 111,
+    "cartridges_plain_tail": "<|im_end|>\n<|im_start|>assistant\n463.26<|im_end|>",
+    "cartridges_with_empty_think_equals_target": true,
+    "cartridges_retokenize_equals_target": false,
+    "cartridges_retokenize_tail": "\n<|im_start|>assistant\n463.26<|im_end|>\n"
+  },
+  "generate_eval_prompt": {
+    "with_enable_thinking_False_ends_with_empty_think": true,
+    "without_kwarg_ends_with_empty_think": false,
+    "without_kwarg_tail": "7<|im_end|>\n<|im_start|>assistant\n",
+    "note": "without the kwarg Qwen3 defaults to thinking mode: no empty think block, the model may emit <think>..."
+  },
+  "digit_tokenization": {
+    "463.26": [
+      "4",
+      "6",
+      "3",
+      ".",
+      "2",
+      "6"
+    ],
+    "PE=463.26": [
+      "PE",
+      "=",
+      "4",
+      "6",
+      "3",
+      ".",
+      "2",
+      "6"
+    ],
+    "1024.07": [
+      "1",
+      "0",
+      "2",
+      "4",
+      ".",
+      "0",
+      "7"
+    ],
+    " 463.26": [
+      " ",
+      "4",
+      "6",
+      "3",
+      ".",
+      "2",
+      "6"
+    ]
+  }
+}

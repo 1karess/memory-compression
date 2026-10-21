@@ -1,0 +1,58 @@
+{
+  "subset": "r0_n256",
+  "n_queries": 20,
+  "mem_tokens": 10979,
+  "yarn": true,
+  "cached_vs_full_bf16": {
+    "kl_mean": {
+      "mean": 0.0003632114312495105,
+      "max": 0.0008871244499459863,
+      "min": 0.00012216791219543666
+    },
+    "kl_max": {
+      "mean": 0.0029247726255562157,
+      "max": 0.008710503578186035,
+      "min": 0.0011140808928757906
+    },
+    "argmax_agree": {
+      "mean": 1.0,
+      "max": 1.0,
+      "min": 1.0
+    },
+    "max_abs_logit_diff": {
+      "mean": 1.1296875,
+      "max": 3.0,
+      "min": 0.625
+    }
+  },
+  "repeat_after_crop": {
+    "same_tokens": true,
+    "kl_mean": 0.0,
+    "kl_max": 0.0,
+    "argmax_agree": 1.0,
+    "max_abs_logit_diff": 0.0
+  },
+  "chunked2048_vs_one_forward": {
+    "same_tokens_rate": 1.0,
+    "kl_mean": {
+      "mean": 0.00037674811246688476,
+      "max": 0.0007082332158461213,
+      "min": 0.00016071512072812766
+    },
+    "kl_max": {
+      "mean": 0.003155785781564191,
+      "max": 0.006271547172218561,
+      "min": 0.0013323421590030193
+    },
+    "argmax_agree": {
+      "mean": 1.0,
+      "max": 1.0,
+      "min": 1.0
+    },
+    "max_abs_logit_diff": {
+      "mean": 1.644921875,
+      "max": 4.125,
+      "min": 0.75
+    }
+  }
+}

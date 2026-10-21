@@ -1,0 +1,58 @@
+{
+  "subset": "r0_n256",
+  "n_queries": 20,
+  "mem_tokens": 10979,
+  "yarn": false,
+  "cached_vs_full_bf16": {
+    "kl_mean": {
+      "mean": 0.0031508975196629764,
+      "max": 0.016695862635970116,
+      "min": 0.00030240468913689256
+    },
+    "kl_max": {
+      "mean": 0.012611136341001838,
+      "max": 0.10792601108551025,
+      "min": 0.0015513254329562187
+    },
+    "argmax_agree": {
+      "mean": 0.9714285731315613,
+      "max": 1.0,
+      "min": 0.8571428656578064
+    },
+    "max_abs_logit_diff": {
+      "mean": 0.75390625,
+      "max": 1.25,
+      "min": 0.5
+    }
+  },
+  "repeat_after_crop": {
+    "same_tokens": true,
+    "kl_mean": 0.0,
+    "kl_max": 0.0,
+    "argmax_agree": 1.0,
+    "max_abs_logit_diff": 0.0
+  },
+  "chunked2048_vs_one_forward": {
+    "same_tokens_rate": 0.95,
+    "kl_mean": {
+      "mean": 0.0023728961517152035,
+      "max": 0.0038789932150393724,
+      "min": 0.00043733324855566025
+    },
+    "kl_max": {
+      "mean": 0.007848705477571409,
+      "max": 0.020947398617863655,
+      "min": 0.0011131808860227466
+    },
+    "argmax_agree": {
+      "mean": 1.0,
+      "max": 1.0,
+      "min": 1.0
+    },
+    "max_abs_logit_diff": {
+      "mean": 0.6348684210526315,
+      "max": 1.0,
+      "min": 0.421875
+    }
+  }
+}

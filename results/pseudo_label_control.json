@@ -1,0 +1,47 @@
+{
+  "n_train": 1024,
+  "n_test": 2000,
+  "teacher_pseudo_labels": {
+    "OLS": {
+      "test_rmse_vs_truth": 8.799048696222584,
+      "corr_with_B": 0.9175523507174034,
+      "mean_abs_diff_vs_B": 3.3405743846212776
+    },
+    "1-NN": {
+      "test_rmse_vs_truth": 9.591773631607447,
+      "corr_with_B": 0.9154664010404414,
+      "mean_abs_diff_vs_B": 2.6056549999999987
+    },
+    "5-NN": {
+      "test_rmse_vs_truth": 9.287476232540245,
+      "corr_with_B": 0.9400424744198691,
+      "mean_abs_diff_vs_B": 2.6348759999999993
+    }
+  },
+  "true_labels_reference": {
+    "OLS": {
+      "test_rmse_vs_truth": 4.586450560571548,
+      "corr_with_B": 0.883996810821573,
+      "mean_abs_diff_vs_B": 6.163009085900385
+    },
+    "1-NN": {
+      "test_rmse_vs_truth": 5.977262906213847,
+      "corr_with_B": 0.8487723769828792,
+      "mean_abs_diff_vs_B": 6.981869999999998
+    },
+    "5-NN": {
+      "test_rmse_vs_truth": 4.741000667580632,
+      "corr_with_B": 0.8803400342544356,
+      "mean_abs_diff_vs_B": 6.114479999999996
+    }
+  },
+  "C_reference": {
+    "test_rmse_mean_of_seed_rmses": 10.013896223136008,
+    "corr_with_B_mean_of_seeds": 0.953094877052374,
+    "mean_abs_diff_vs_B_mean_of_seeds": 1.6632083333333327,
+    "seed_average_prediction_rmse": 9.853453724456205
+  },
+  "B_reference": {
+    "test_rmse": 9.792408409068727
+  }
+}

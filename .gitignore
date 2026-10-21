@@ -1,0 +1,22 @@
+# Large or regenerable (see README "Reproduce")
+models/
+venv/
+outputs/
+hf_home/
+tools/
+logs/
+data/raw/
+third_party/
+.uv-cache/
+.triton-cache/
+.inductor-cache/
+.mplconfig/
+__pycache__/
+*.pyc
+*.bak_stage0
+docs/截屏*.png
+# local / private
+.claude/
+jobs/cluster.local.sh
+docs/stage0_plan_full.txt
+docs/*.xlsx

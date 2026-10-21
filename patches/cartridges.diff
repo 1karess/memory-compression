@@ -1,0 +1,98 @@
+diff --git a/cartridges/cache.py b/cartridges/cache.py
+index 1e2dbfb..e2ce901 100644
+--- a/cartridges/cache.py
++++ b/cartridges/cache.py
+@@ -11,6 +11,15 @@ import torch.nn as nn
+ 
+ from cartridges.utils import get_logger
+ 
++# MZ patch P4: keep trainable cache parameters in fp32 (master weights) when MZ_FP32_CACHE=1;
++# they are cast back to the activation dtype when concatenated, so attention still runs in bf16.
++import os
++_FP32_CACHE = os.environ.get("MZ_FP32_CACHE", "0") == "1"
++
++
++def _master(t: torch.Tensor) -> torch.Tensor:
++    return t.float() if _FP32_CACHE else t
++
+ logger = get_logger(__name__)
+ 
+ @dataclass
+@@ -87,7 +96,7 @@ class TrainableCache(nn.Module):
+ 
+             self.frozen_keys = nn.ParameterList(
+                 [
+-                    nn.Parameter(keys_vec[:, :, :num_frozen_tokens].contiguous())
++                    nn.Parameter(_master(keys_vec[:, :, :num_frozen_tokens].contiguous()))
+                     for keys_vec in init_keys
+                 ]
+                 if num_frozen_tokens
+@@ -95,7 +104,7 @@ class TrainableCache(nn.Module):
+             )
+             self.frozen_values = nn.ParameterList(
+                 [
+-                    nn.Parameter(values_vec[:, :, :num_frozen_tokens].contiguous())
++                    nn.Parameter(_master(values_vec[:, :, :num_frozen_tokens].contiguous()))
+                     for values_vec in init_values
+                 ]
+                 if num_frozen_tokens
+@@ -107,13 +116,13 @@ class TrainableCache(nn.Module):
+ 
+             self.trainable_keys = nn.ParameterList(
+                 [
+-                    nn.Parameter(keys_vec[:, :, num_frozen_tokens:].contiguous())
++                    nn.Parameter(_master(keys_vec[:, :, num_frozen_tokens:].contiguous()))
+                     for keys_vec in init_keys
+                 ]
+             )
+             self.trainable_values = nn.ParameterList(
+                 [
+-                    nn.Parameter(values_vec[:, :, num_frozen_tokens:].contiguous())
++                    nn.Parameter(_master(values_vec[:, :, num_frozen_tokens:].contiguous()))
+                     for values_vec in init_values
+                 ]
+             )
+@@ -163,12 +172,12 @@ class TrainableCache(nn.Module):
+             self._values[layer_idx] = torch.cat(values, dim=2)
+         
+         if self._num_trainable_tokens > 0:
+-            keys = [self.trainable_keys[layer_idx]] + keys
+-            values = [self.trainable_values[layer_idx]] + values
++            keys = [self.trainable_keys[layer_idx].to(new_keys.dtype)] + keys
++            values = [self.trainable_values[layer_idx].to(new_values.dtype)] + values
+         
+         if self._num_frozen_tokens > 0:
+-            keys = [self.frozen_keys[layer_idx]] + keys
+-            values = [self.frozen_values[layer_idx]] + values
++            keys = [self.frozen_keys[layer_idx].to(new_keys.dtype)] + keys
++            values = [self.frozen_values[layer_idx].to(new_values.dtype)] + values
+         
+         if self._num_trainable_tokens == 0 and self._num_frozen_tokens == 0:
+             return self._keys[layer_idx], self._values[layer_idx]
+@@ -239,7 +248,7 @@ class TrainableCache(nn.Module):
+         # Here, num_tokens is inferred from trainable keys, but note that the total tokens may be different if fixed tokens exist.
+         # The number of fixed tokens can be inferred from frozen_keys if available.
+         num_frozen_tokens = (
+-            checkpoint["frozen_keys"][0].size(1) if checkpoint["frozen_keys"] else 0
++            checkpoint["frozen_keys"][0].size(2) if checkpoint["frozen_keys"] else 0  # MZ patch P1: dim 2 is tokens (was size(1) = heads)
+         )
+ 
+         return cls(
+diff --git a/cartridges/train.py b/cartridges/train.py
+index 648334e..aa04eb2 100644
+--- a/cartridges/train.py
++++ b/cartridges/train.py
+@@ -488,6 +488,13 @@ def train(config: TrainConfig):
+                 accum_loss = 0.0
+                 accum_num_input_tokens, accum_num_target_tokens = 0, 0
+ 
++            # MZ patch P2: actually stop once max_optimizer_steps updates have been taken
++            if config.max_optimizer_steps > 0 and optimizer_step >= config.max_optimizer_steps:
++                break
++        if config.max_optimizer_steps > 0 and optimizer_step >= config.max_optimizer_steps:
++            logger.info(f"Reached max_optimizer_steps={config.max_optimizer_steps}, stopping.")
++            break
++
+     # We do a final evaluation and generation after training.
+     # This is also useful for doing evaluation of a pretrained model without training
+     do_evaluation()

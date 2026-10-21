@@ -1,0 +1,16 @@
+{
+  "n_rows": 9568,
+  "n_unique_x": 9527,
+  "n_rows_in_duplicate_x_groups": 82,
+  "n_duplicate_x_groups_with_different_y": 0,
+  "split_sizes": {
+    "reserve": 5008,
+    "test": 2000,
+    "distill": 1024,
+    "memory_pool": 1024,
+    "dev": 256,
+    "tune": 256
+  },
+  "x_leak_across_splits": 0,
+  "seed": 0
+}
